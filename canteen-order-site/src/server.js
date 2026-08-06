@@ -7,7 +7,19 @@ const { buildCardsWorkbook, buildDatasheetWorkbook } = require("./generateOutput
 
 const LOC_ROUTE = require("../loc_route.json");
 const KNOWN_LOCATIONS = Object.keys(LOC_ROUTE).sort();
-const KNOWN_BRANDS = ["CHIX", "CREAMY", "PIZZA", "DAD", "PRO", "STEERS", "GRAVE", "INNBUCKS", "PASTINO", "HAEFILIS", "CHIX+PRO", "STEERS+PRO", "PROGROUNDS", "SADZA AND BEEF", "RICE AND CHICKEN", "SADZA AND MATEMBA", "SADZA AND CHICKEN"];
+const KNOWN_BRANDS = [
+  { value: "CHIX", label: "Chicken Inn" },
+  { value: "CREAMY", label: "Creamy inn" },
+  { value: "PIZZA", label: "Pizza Inn" },
+  { value: "DAD", label: "DAD" },
+  { value: "PRO", label: "Pro" },
+  { value: "STEERS", label: "Steers" },
+  { value: "GRAVE", label: "Grave" },
+  { value: "INNBUCKS", label: "Innbucks" },
+  { value: "HAEFILIS", label: "Haefilis" },
+  { value: "PASTINO", label: "Pastino" },
+  { value: "PROGROUNDS", label: "ProGrounds" },
+];
 
 const app = express();
 app.use(express.json());

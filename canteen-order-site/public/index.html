@@ -70,7 +70,7 @@ function addRow() {
   const div = document.createElement('div');
   div.className = 'row';
   div.innerHTML = `
-    <select class="brandSel">${BRANDS.map(b => `<option value="${b}">${b}</option>`).join('')}</select>
+    <select class="brandSel">${BRANDS.map(b => `<option value="${b.value}">${b.label}</option>`).join('')}</select>
     <select class="sessionSel"><option value="AM">AM</option><option value="PM">PM</option><option value="">(none)</option></select>
     <input class="qtyInput" type="number" min="0" placeholder="qty" style="max-width:80px" />
     <button class="small" onclick="this.parentElement.remove()">x</button>
