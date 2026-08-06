@@ -16,28 +16,10 @@
     </div>
   </div>
 
-  <div class="tabs">
-    <button id="tabPaste" class="active" onclick="showTab('paste')">Paste order text</button>
-    <button id="tabForm" onclick="showTab('form')">Fill in a form</button>
-  </div>
-
   <div class="ticket">
     <div class="ticket-notch"></div>
 
-    <!-- Paste mode: same format the team already uses -->
-    <div id="panelPaste" class="panel active">
-      <label>Location name, then brand + Am/Pm quantities (same format you'd send on WhatsApp)</label>
-      <textarea id="pasteText" placeholder="Greenfields
-Pizza inn
-Am 4
-Pm 4
-Innbucks
-Am 1"></textarea>
-      <button class="primary" onclick="submitPaste()">Submit order</button>
-    </div>
-
-    <!-- Structured form mode -->
-    <div id="panelForm" class="panel">
+    <div id="panelForm">
       <label>Location</label>
       <input list="locations" id="formLocation" placeholder="Start typing..." />
       <datalist id="locations"></datalist>
@@ -62,13 +44,6 @@ fetch('/api/locations').then(r => r.json()).then(locs => {
   document.getElementById('locations').innerHTML = locs.map(l => `<option value="${l}">`).join('');
 });
 
-function showTab(which) {
-  document.getElementById('tabPaste').classList.toggle('active', which === 'paste');
-  document.getElementById('tabForm').classList.toggle('active', which === 'form');
-  document.getElementById('panelPaste').classList.toggle('active', which === 'paste');
-  document.getElementById('panelForm').classList.toggle('active', which === 'form');
-}
-
 function addRow() {
   const div = document.createElement('div');
   div.className = 'row';
@@ -85,21 +60,6 @@ function showMsg(text, ok) {
   const el = document.getElementById('msg');
   el.textContent = text;
   el.className = ok ? 'ok' : 'err';
-}
-
-async function submitPaste() {
-  const text = document.getElementById('pasteText').value;
-  const res = await fetch('/api/orders/paste', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text })
-  });
-  const data = await res.json();
-  if (res.ok) {
-    showMsg(`Order recorded for ${data.location} (${data.lines.length} items).`, true);
-    document.getElementById('pasteText').value = '';
-  } else {
-    showMsg(data.error || 'Something went wrong.', false);
-  }
 }
 
 async function submitForm() {
