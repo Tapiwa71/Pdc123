@@ -54,7 +54,10 @@ Am 1"></textarea>
 
 <script>
 const BRANDS = [];
-fetch('/api/brands').then(r => r.json()).then(b => { BRANDS.push(...b); });
+fetch('/api/brands').then(r => r.json()).then(b => {
+  BRANDS.push(...b);
+  addRow(); // first row waits for the brand list, so its dropdown isn't empty
+});
 fetch('/api/locations').then(r => r.json()).then(locs => {
   document.getElementById('locations').innerHTML = locs.map(l => `<option value="${l}">`).join('');
 });
@@ -77,7 +80,6 @@ function addRow() {
   `;
   document.getElementById('itemRows').appendChild(div);
 }
-addRow();
 
 function showMsg(text, ok) {
   const el = document.getElementById('msg');
