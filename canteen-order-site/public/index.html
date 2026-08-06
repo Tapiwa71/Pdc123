@@ -2,62 +2,55 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Submit meal order</title>
-<style>
-  body { font-family: -apple-system, Arial, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; color: #222; }
-  h1 { font-size: 20px; }
-  .tabs { display: flex; gap: 8px; margin-bottom: 1rem; }
-  .tabs button { padding: 8px 14px; border: 1px solid #ccc; background: #f5f5f5; cursor: pointer; border-radius: 4px; }
-  .tabs button.active { background: #222; color: #fff; }
-  .panel { display: none; }
-  .panel.active { display: block; }
-  label { display: block; margin-top: 12px; font-size: 14px; font-weight: 600; }
-  input, select, textarea { width: 100%; padding: 8px; margin-top: 4px; font-size: 14px; box-sizing: border-box; }
-  textarea { height: 160px; font-family: monospace; }
-  .row { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
-  .row select, .row input { width: auto; flex: 1; }
-  button.primary { margin-top: 16px; padding: 10px 18px; background: #1a7f4f; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 15px; }
-  button.small { padding: 4px 10px; }
-  #msg { margin-top: 12px; padding: 10px; border-radius: 4px; display: none; }
-  #msg.ok { background: #d1e7dd; display: block; }
-  #msg.err { background: #f8d7da; display: block; }
-  datalist { }
-</style>
+<title>ProCanteen — submit your order</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <h1>Submit your meal order</h1>
+  <div class="pc-header">
+    <div class="pc-badge">PC</div>
+    <div>
+      <p class="pc-title">ProCanteen</p>
+      <p class="pc-subtitle">Submit your order</p>
+    </div>
+  </div>
 
   <div class="tabs">
     <button id="tabPaste" class="active" onclick="showTab('paste')">Paste order text</button>
     <button id="tabForm" onclick="showTab('form')">Fill in a form</button>
   </div>
 
-  <!-- Paste mode: same format the team already uses -->
-  <div id="panelPaste" class="panel active">
-    <label>Location name, then brand + Am/Pm quantities (same format you'd send on WhatsApp)</label>
-    <textarea id="pasteText" placeholder="Greenfields
+  <div class="ticket">
+    <div class="ticket-notch"></div>
+
+    <!-- Paste mode: same format the team already uses -->
+    <div id="panelPaste" class="panel active">
+      <label>Location name, then brand + Am/Pm quantities (same format you'd send on WhatsApp)</label>
+      <textarea id="pasteText" placeholder="Greenfields
 Pizza inn
 Am 4
 Pm 4
 Innbucks
 Am 1"></textarea>
-    <button class="primary" onclick="submitPaste()">Submit order</button>
+      <button class="primary" onclick="submitPaste()">Submit order</button>
+    </div>
+
+    <!-- Structured form mode -->
+    <div id="panelForm" class="panel">
+      <label>Location</label>
+      <input list="locations" id="formLocation" placeholder="Start typing..." />
+      <datalist id="locations"></datalist>
+
+      <label>Order items</label>
+      <div id="itemRows"></div>
+      <button class="small" onclick="addRow()">+ Add item</button>
+
+      <button class="primary" onclick="submitForm()">Submit order</button>
+    </div>
+
+    <div id="msg"></div>
   </div>
-
-  <!-- Structured form mode -->
-  <div id="panelForm" class="panel">
-    <label>Location</label>
-    <input list="locations" id="formLocation" placeholder="Start typing..." />
-    <datalist id="locations"></datalist>
-
-    <label>Order items</label>
-    <div id="itemRows"></div>
-    <button class="small" onclick="addRow()">+ Add item</button>
-
-    <button class="primary" onclick="submitForm()">Submit order</button>
-  </div>
-
-  <div id="msg"></div>
 
 <script>
 const BRANDS = [];

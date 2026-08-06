@@ -2,11 +2,11 @@
  * Wraps the existing Express app (src/server.js) as a single Netlify
  * Function, so none of the route/business logic needed to change.
  *
- * Netlify redirects "/api/*" to "/.netlify/functions/api/:splat" (see
- * netlify.toml), which strips the "/api" prefix along the way. This file
- * puts it back before handing the request to Express, since all of the
- * app's routes are defined as "/api/..." (and stay that way for local
- * dev with `node src/server.js` too).
+ * Netlify's "/api/*" redirect (see netlify.toml) is a rewrite (status 200),
+ * which means the function receives the ORIGINAL request path as-is (e.g.
+ * "/api/brands"), not a rewritten "/.netlify/functions/..." path. Since
+ * the app's routes are already defined as "/api/...", no path translation
+ * is needed here at all - just hand the request straight to Express.
  */
 const serverless = require("serverless-http");
 const app = require("../../src/server");
@@ -14,15 +14,9 @@ const app = require("../../src/server");
 // xlsx exports are binary - without this, serverless-http would pass the
 // file through as a UTF-8 string and corrupt it. Anything else this app
 // returns (JSON) stays untouched.
-const serverlessHandler = serverless(app, {
+exports.handler = serverless(app, {
   binary: [
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     "application/octet-stream",
   ],
 });
-
-exports.handler = async (event, context) => {
-  const strippedPrefix = event.path.replace(/^\/\.netlify\/functions\/api/, "");
-  const withApiPrefix = "/api" + (strippedPrefix.startsWith("/") ? strippedPrefix : "/" + strippedPrefix);
-  return serverlessHandler({ ...event, path: withApiPrefix }, context);
-};

@@ -5,9 +5,9 @@ const { parseOrderMessage } = require("./parseOrder");
 const { recordOrder, getDay, applyPreviousDayDefaults, setStatus } = require("./store");
 const { buildCardsWorkbook, buildDatasheetWorkbook } = require("./generateOutputs");
 
-const LOC_ROUTE = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "loc_route.json"), "utf8"));
+const LOC_ROUTE = require("../loc_route.json");
 const KNOWN_LOCATIONS = Object.keys(LOC_ROUTE).sort();
-const KNOWN_BRANDS = ["CHIX", "CREAMY", "PIZZA", "DAD", "PRO", "STEERS", "GRAVE", "INNBUCKS", "PASTINO", "HAEFILIS", "CHIX+PRO", "STEERS+PRO", "PROGROUNDS"];
+const KNOWN_BRANDS = ["CHIX", "CREAMY", "PIZZA", "DAD", "PRO", "STEERS", "GRAVE", "INNBUCKS", "PASTINO", "HAEFILIS", "CHIX+PRO", "STEERS+PRO", "PROGROUNDS", "SADZA AND BEEF", "RICE AND CHICKEN", "SADZA AND MATEMBA", "SADZA AND CHICKEN"];
 
 const app = express();
 app.use(express.json());

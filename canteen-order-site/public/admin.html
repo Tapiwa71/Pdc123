@@ -2,26 +2,36 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Canteen dispatch dashboard</title>
+<title>ProCanteen — dispatch admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
 <style>
-  body { font-family: -apple-system, Arial, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #222; }
-  h1 { font-size: 20px; }
-  table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-  th, td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; font-size: 14px; }
-  .status { padding: 2px 8px; border-radius: 4px; font-size: 12px; }
-  .status-received { background: #fff3cd; }
-  .status-reviewed { background: #cfe2ff; }
-  .status-confirmed { background: #d1e7dd; }
-  .status-carried_over { background: #f8d7da; }
-  button { padding: 6px 12px; margin-right: 8px; cursor: pointer; }
-  .missing { color: #a33; font-size: 13px; }
+  body { max-width: 900px; }
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .toolbar button, .toolbar a button {
+    padding: 10px 16px; background: transparent; border: 1.5px solid var(--cream-dim);
+    color: var(--cream); border-radius: 6px; cursor: pointer; font-family: var(--font-body); font-size: 13px; font-weight: 600;
+  }
+  .toolbar a button:hover, .toolbar button:hover { border-color: var(--sunflower); color: var(--sunflower); }
+  h3 { font-family: var(--font-display); font-size: 15px; color: var(--sunflower); margin: 1.5rem 0 0.5rem; }
   #missingList { margin: 0.5rem 0 1.5rem; }
+  .confirm-btn {
+    padding: 4px 10px; background: transparent; border: 1.5px dashed var(--avocado);
+    color: var(--avocado); border-radius: 6px; cursor: pointer; font-size: 12px; font-family: var(--font-mono);
+  }
 </style>
 </head>
 <body>
-  <h1>Dispatch admin — <span id="dateLabel"></span></h1>
+  <div class="pc-header">
+    <div class="pc-badge">PC</div>
+    <div>
+      <p class="pc-title">Dispatch admin</p>
+      <p class="pc-subtitle" id="dateLabel"></p>
+    </div>
+  </div>
 
-  <div>
+  <div class="toolbar">
     <button onclick="applyCutoff()">Apply 7am cutoff defaults</button>
     <a href="/api/export/cards"><button>Download dispatch cards (.xlsx)</button></a>
     <a href="/api/export/datasheet"><button>Download datasheet (.xlsx)</button></a>
@@ -51,11 +61,11 @@ async function load() {
     const items = order.lines.map(l => `${l.brand} ${l.session||''} ${l.qty}`).join(', ');
     tr.innerHTML = `
       <td>${loc}</td>
-      <td><span class="status status-${order.status}">${order.status}</span></td>
+      <td><span class="stamp stamp-${order.status}">${order.status}</span></td>
       <td>${order.sender || ''}</td>
       <td>${items}</td>
       <td>${new Date(order.receivedAt).toLocaleTimeString()}</td>
-      <td>${order.status !== 'confirmed' ? `<button onclick="confirmOrder('${loc}')">Confirm</button>` : ''}</td>
+      <td>${order.status !== 'confirmed' ? `<button class="confirm-btn" onclick="confirmOrder('${loc}')">Confirm</button>` : ''}</td>
     `;
     body.appendChild(tr);
   }
