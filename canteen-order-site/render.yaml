@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: canteen-order-site
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node src/server.js
+    envVars:
+      - key: MONGODB_URI
+        sync: false
