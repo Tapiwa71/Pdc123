@@ -21,7 +21,7 @@ const KNOWN_BRANDS = [
   { value: "PROGROUNDS", label: "ProGrounds" },
   { value: "CAPRI", label: "Capri" },
   { value: "TRAINEES", label: "Trainees" },
-  { value: "BLACKSHARK AGENTS", label: "Blackshark agents" },
+  { value: "BLACKSHARK AGENTS", label: "Blackshark agents" }, { value: "N/A", label: "N/A" },
 ];
 
 const app = express();
